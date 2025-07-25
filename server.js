@@ -1,0 +1,38 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const passport = require('passport');
+const cors = require('cors');
+const cookieParser = require('cookie-parser'); // ✅ ADD THIS
+require('dotenv').config();
+require('./config/passport');
+
+const authRoutes = require('./routes/authRoutes');
+
+const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+
+app.use(express.json());
+app.use(cookieParser()); // ✅ ADD THIS LINE
+
+app.use(session({
+  secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: false,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error(err));
+
+app.use('/api/auth', authRoutes);
+
+const PORT = process.env.PORT;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
