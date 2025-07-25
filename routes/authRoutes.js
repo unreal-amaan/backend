@@ -8,11 +8,8 @@ const router = express.Router();
 // Local auth
 router.post('/signup', signup);
 router.post('/login', login);
-router.get('/logout', logout);
-router.get('/me', authMiddleware, (req, res) => {
-    console.log("Hit /me route");
-    getUser(req, res);
-});
+router.get('/logout',authMiddleware, logout);
+router.get('/me', authMiddleware, getUser);
 
 // Google OAuth
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));

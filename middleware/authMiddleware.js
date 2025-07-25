@@ -1,6 +1,6 @@
    const authMiddleware = (req, res, next) => {
        const token = req.cookies.token;
-       console.log("Token from cookies:", token); // Debug log
+       console.log("Token from cookies:", token); 
        if (!token) {
            console.log("⚠️ Token missing from request cookies");
            return res.status(401).json({ message: 'Not authorized' });
