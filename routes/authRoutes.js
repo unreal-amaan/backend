@@ -1,14 +1,14 @@
 const express = require('express');
 const passport = require('passport');
 const { signup, login, logout, getUser } = require('../controllers/authController');
-const authMiddleware = require('../middleware/isAuthenticated');
+const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // Local auth
 router.post('/signup', signup);
 router.post('/login', login);
-router.get('/logout',authMiddleware, logout);
+router.post('/logout',authMiddleware, logout);
 router.get('/me', authMiddleware, getUser);
 
 // Google OAuth
